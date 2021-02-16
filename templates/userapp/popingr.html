@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+
+<style>
+    body{
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat";
+    }
+    .searchbox{
+      width: 90%;
+      margin: 10px auto;
+    }
+    .header{
+      background: #ff9933;
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
+    }
+    .header h1{
+      text-transform: uppercase;
+      color: white;
+      margin: 0;
+      margin-bottom: 8px;
+    }
+    #footer{
+      background: #F7D358;
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
+    }
+    #value{
+      border: none;
+      background: #F7D358;
+      padding: 6px;
+      font-size: 18px;
+      width: 80%;
+      border-radius: 6px;
+      color: white;
+    }
+    #value:focus{
+      outline: none;
+    }
+    .container{
+      background: #FFFFF5;
+      padding: 1%;
+    }
+    .item{
+      margin: 3% 0px;
+      display: flex;
+      align-items: center;
+    }
+    .icon{
+      width: 135px;
+      height: 25px;
+      background: #ff9900;
+      color: #fff;
+      font-size: 15px;
+      text-align: center;
+      line-height: 25px;
+      border-radius: 50px;
+      transition: 0.4s;
+      margin-right: 8px;
+    }
+    .name{
+      font-size: 17px;
+      font-weight: 470;
+      color: #333;
+    }
+    #inval{
+        cursor:pointer;
+        background: #ffb03b;
+        padding: 10px 24px;
+        color: #fff;
+        transition: 0.4s;
+        border-radius: 50px;
+    }
+    #inval:hover{
+        background: #ffa012;
+    }
+    li {
+        list-style:none;
+    }
+    .page-link {
+        text-decoration: none;
+        color: #fff;
+    }
+</style>
+<script>
+    function filter(){
+
+        var value, name, item, i;
+
+        value = document.getElementById("value").value.toUpperCase();
+        item = document.getElementsByClassName("item");
+
+        for(i=0;i<item.length;i++){
+          name = item[i].getElementsByClassName("name");
+          if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+            item[i].style.display = "flex";
+          }else{
+            item[i].style.display = "none";
+          }
+        }
+      }
+</script>
+<script>
+    $(document).ready(function(){
+        $('#ingrsearch').click(function(){
+            ingr = $('input[name="value"]').val();
+            $.ajax({
+                url: {% url "popsearch" %},
+                data: {"ingr":ingr},
+                type: 'get',
+                success:function(data){
+                    if(data.trim() == '0') {
+                        alert('식재료 이름을 입력하세요');
+                        $('input[name="value"]').focus();
+                    } else if (data.trim() == '1') {
+                        alert('등록되지 않은 식재료입니다');
+                    } else {
+                        $('.itemcontainer').append(
+                            `{% for i in selectlist%}\n
+                                <div class="item">\n
+                                    <span class="icon">{{i.ic_name}}</span>\n
+                                    <span class="name">{{i.i_name}}</span>\n
+                                </div>\n
+                            {% endfor %}`
+
+                        );
+                    };
+                }
+            });
+        });
+    });
+</script>
+<body>
+    <div class="searchbox">
+        <div class="header">
+            <h1>Search</h1>
+            <input onkeyup="filter()" type="text" id="value" name="value" class="recingr" placeholder="식재료 이름을 입력하세요">
+<!--            <button id="ingrsearch">식재료 찾기</button>-->
+        </div>
+        <div class="itemcontainer">
+            {% for i in popingr%}
+                <div class="item">
+                    <span class="icon">{{i.ic_name}}</span>
+                    <span class="name">{{i.i_name}}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container">
+        <div id="footer" class="row">
+            <div class="class=col-lg-3 col-md-6 form-group mt-3">
+                <button id="inval" style="border: 2px double; font-size:100%; font-weight:700;" type="button" onclick="window.close()">검색 창 닫기</button>
+            </div>
+        </div>
+        <div style="text-align:center; background:#ffa012;">
+            <li class="page-review">
+                {% if before %}
+                <a class="page-link" href="?&page={{beforenum}}">이전</a>
+                {% endif %}
+                {% for l in pagelist %}
+                <a class="page-link" href="?&page={{l}}">{{l}}</a>
+                {% endfor %}
+                {% if next %}
+                <a class="page-link" href="?&page={{nextnum}}">다음</a>
+                {% endif %}
+            </li>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+{% extends "inner-page.html" %}
+
+{% load static %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+<style>
+     li{
+        list-style:none;
+    }
+    .section-title {
+        margin-top: 125px;
+    }
+    #recipeingrcheck{
+        color: #fff;
+    }
+    button{
+        background: #ffb03b;
+        border: 0;
+        padding: 10px 24px;
+        color: #fff;
+        transition: 0.4s;
+        border-radius: 50px;
+    }
+    button:hover{
+        background: #ffa012;
+    }
+    th, td, tr {
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+    #showringr{
+        background:#F3E2A9;
+        opacity:0.9;
+    }
+    thead{
+        vertical-align:middle;
+        border-bottom:5px solid #FFBF00;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        $('tr:even').css("background","#F7D358");
+    });
+</script>
+<body>
+    <section>
+        <div class="container" style="box-shadow: 5px 5px 5px 5px gray; padding:30px;">
+            <div class="section-title" >
+                <h2>
+                    <span>{{request.session.snickname}}</span> 님께서 작성하신 <span>레시피 식재료</span>를 등록합니다.
+                </h2>
+            </div>
+            <div class="col-lg-12 col-md-6">
+                <table style="margin-left: auto; margin-right: auto;">
+                    <thead>
+                        <th><h5 style="font-weight:700;">식재료 이름</h5></th>
+                        <th><h5 style="font-weight:700;">계량</h5></th>
+                    </thead>
+                    <tbody>
+                        {% for r in rzip %}
+                        <tr id="showringr">
+                            <td style="color:#190707;">{{r.0}}</td>
+                            <td style="color:#190707;">{{r.1}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center" style="padding: 15px;">
+                <button type="button"><a id="recipeingrcheck" href="{% url 'recipeingradd' %}?iid={{iid}}&?ramt={{ramt}}">레시피 식재료 확인</a></button>
+            </div>
+        </div>
+    </section>
+</body>
+{% endblock %}
+
+    <!-- ======= Breadcrumbs Section ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Inner Page</h2>
+          <ol>
+            <li><a href="{% url 'main' %}">Home</a></li>
+            <li>Inner Page</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Breadcrumbs Section -->

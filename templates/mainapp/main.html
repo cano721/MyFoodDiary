@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+
+
+
+<!-- ======= 오늘의 추천 Section ======= -->
+  <section id="hero">
+
+
+    <div class="hero-container">
+      <div id="heroCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+
+        <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+
+          <!-- Slide 1 -->
+          <div class="carousel-item active" style="background: url('{{todayrecommend.0.r_mimage}}');">
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animate__animated animate__fadeInDown"><span>오늘의</span> 추천</h2>
+                <p style="font-size:30px;" class="animate__animated animate__fadeInUp">{{todayrecommend.0.r_name}}</p>
+                <div>
+                  <a href="{% url 'recipe_detail' %}?r_id={{todayrecommend.0.r_id}}" class="btn-menu animate__animated animate__fadeInUp scrollto">레시피 보러가기</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="carousel-item" style="background: url('{{todayrecommend.1.r_mimage}}');">
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animate__animated animate__fadeInDown"><span>오늘의</span> 추천</h2>
+                <p style="font-size:30px;" class="animate__animated animate__fadeInUp">{{todayrecommend.1.r_name}}</p>
+                <div>
+                  <a href="{% url 'recipe_detail' %}?r_id={{todayrecommend.1.r_id}}" class="btn-menu animate__animated animate__fadeInUp scrollto">레시피 보러가기</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+               <!-- Slide 2 -->
+          <div class="carousel-item" style="background: url('{{todayrecommend.2.r_mimage}}');">
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animate__animated animate__fadeInDown"><span>오늘의</span> 추천</h2>
+                <p style="font-size:30px;" class="animate__animated animate__fadeInUp">{{todayrecommend.2.r_name}}</p>
+                <div>
+                  <a href="{% url 'recipe_detail' %}?r_id={{todayrecommend.2.r_id}}" class="btn-menu animate__animated animate__fadeInUp scrollto">레시피 보러가기</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon icofont-simple-left" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon icofont-simple-right" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+
+      </div>
+    </div>
+  </section><!-- End Hero -->
+
+
+      <!-- ======= Gallery Section ======= -->
+      <section id="gallery" class="gallery">
+        <div class="container-fluid">
+
+          <div class="section-title">
+            <h2><span>맛뿌다</span>에서 다양한 레시피를 만나보세요!</h2>
+            <p></p>
+          </div>
+
+          <div class="row no-gutters">
+           {% for r in allrecipes %}
+             {% if r.r_image != 'None' %}
+                <div class="col-lg-3 col-md-4">
+                  <div class="gallery-item">
+                    <a href="{% url 'recipe_detail' %}?r_id={{r.r_id}}">
+                      <img style="width:370px; height:270px;" src="{{r.r_mimage}}" alt="" class="img-fluid">
+                    </a>
+                  </div>
+                </div>
+              {% endif %}
+           {% endfor %}
+
+
+
+          </div>
+
+        </div>
+      </section><!-- End Gallery Section -->
+
+
+
+    <!-- ======= Events Section ======= -->
+    <section id="events" class="events">
+        <div class="container">
+
+          <div class="section-title">
+            <h2>최근 작성된 <span>리뷰</span></h2>
+          </div>
+
+          <div class="owl-carousel events-carousel">
+
+          {% for r in reviews%}
+            <div class="row event-item">
+
+              <div class="col-lg-6">
+                   <a href="{% url 'recipe_detail' %}?r_id={{r.r_id}}">
+                    <img style="width:550px;height:360px;" src="{{r.r_mimage}}" class="img-fluid" alt="">
+                   </a>
+              </div>
+              <div style="" class="col-lg-6 pt-4 pt-lg-0 content">
+                  <a href="{% url 'recipe_detail' %}?r_id={{r.r_id}}">
+                    <h3 style="font-size:27px; margin:20px 0px 0px 0px;">{{r.r_name}}</h3>
+                  </a>
+                    <div class="price">
+                        <p style="margin:10px 0px 10px 0px;font-size:20px;">작성자 : {{r.rv_u_nick}}</p>
+                      <p ><span>
+                           {% if r.r_num == 10.0 %}
+                                ★★★★★ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 9.0 %}
+                                ★★★★★ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 8.0 %}
+                                ★★★★☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 7.0 %}
+                                ★★★★☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 6.0 %}
+                                ★★★☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 5.0 %}
+                               ★★★☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 4.0 %}
+                                ★★☆☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 3.0 %}
+                                ★★☆☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 2.0 %}
+                                ★☆☆☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% elif r.r_num >= 1.0 %}
+                               ★☆☆☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% else %}
+                                ☆☆☆☆☆ <span style="all:unset; font-size:17px">({{r.r_num}}점)</span>
+                            {% endif %}
+                      </span></p>
+                    </div>
+                    <p style="margin:23px 0px 0px 0px; font-size:27px">
+                        "{{r.rv_review}}"
+                    </p>
+              </div>
+
+            </div>
+        {% endfor %}
+
+          </div>
+
+        </div>
+      </section><!-- End Events Section -->
+
+
+
+
+
+{% endblock %}
+
+
+
+
